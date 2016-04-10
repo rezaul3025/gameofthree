@@ -99,7 +99,7 @@
 		
 		<div ng-if="playersNo == 1 &amp;&amp; !hasJoin"> Player 1 ready to play <br/></div>
 		<div ng-if="playersNo == 1 || playersNo == 0" > 
-			<label>Enter you name to join the game</label> <input type="text" ng-model="name"
+			<label>Enter your name to join the game</label> <input type="text" ng-model="name"
 			placeholder="Enter a name here" />
 			<button type="button" ng-click="join(name)" >Join</button>
 		</div>
@@ -115,7 +115,7 @@
 		</div>
 		<div ng-if="hasJoin">
 			<p ng-if="gameStatus.result == 'none'">Please, click on any button to start the game</p>
-			<p> [Note : Please, do not refresh the browser during]</p>
+			<p> [Note : Please, do not refresh the browser]</p>
 			<table cellpadding="3">
 				<tr>
 					<td><button ng-disabled="gameStatus.currentStatus[pid] &gt; 0" ng-click="play(-1)">-1</button></td>
@@ -126,7 +126,7 @@
 			<br/>
 			<button ng-click="reset()">Reset</button>
 		</div>
-		<div ng-if="playersNo == 2 &amp;&amp; !pid"> Game in on going between </div>
+		<div ng-if="playersNo == 2 &amp;&amp; pid.length=0"> Game in progress two player  </div>
 	</div>
 </body>
 </html>
