@@ -16,11 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class GameController {
 	
 	Map<String, String> players = new HashMap<>();
-	Map<String, Integer> currentStatus = new HashMap<>(); 
+	Map<String, Float> currentStatus = new HashMap<>(); 
 	List<String> logs = new ArrayList<>();
-	String result = new String("none");
+	String resultMessage = new String("none");
 	GameStatus gStatus = new GameStatus();
 	int randNumber;
+	float result = 0;
 	
 	@RequestMapping(value="/checkstatus", method = RequestMethod.GET)
 	public Integer checkStatus(){
@@ -51,39 +52,43 @@ public class GameController {
 	
 	@RequestMapping(value="/play/{playerid}/{value}", method = RequestMethod.GET)
 	public void play(@PathVariable("playerid") String playerid, @PathVariable("value") Integer value ){
+		
 		if(currentStatus.size() == 0){
 			Random r = new Random();
 			int Low = 100;
 			int High = 300;
 			randNumber = r.nextInt(High-Low) + Low;
-			randNumber = (randNumber+value)/3;
-			if( randNumber == 1){
-				result = "Game over "+players.get(playerid)+" won !!";
+			logs.add("Starting number : "+randNumber);
+		
+			logs.add(players.get(playerid)+"["+value+"] : "+(randNumber+value)+"/3 = "+(randNumber+value)/3);
+			
+			result = (randNumber+value)/3;
+			
+			if( result == 1){
+				resultMessage = "Game over "+players.get(playerid)+" won !!";
 			}
 			else {
-				currentStatus.put(playerid, randNumber);
+				currentStatus.put(playerid, result);
 			}
-			
-			logs.add("Played by "+players.get(playerid));
 		}
 		else if(currentStatus.size() == 1){
 			if(currentStatus.get(playerid) == null){
-				for(Map.Entry<String, Integer> entry : currentStatus.entrySet()){
-					randNumber = entry.getValue();
+				for(Map.Entry<String, Float> entry : currentStatus.entrySet()){
+					result = entry.getValue();
 				}
 				 
-				randNumber = (randNumber+value) / 3;
+				logs.add(players.get(playerid)+"["+value+"] : "+(result+value)+"/3 = "+(result+value)/3);
 				
-				if(randNumber == 1){
-					result = "Game over "+players.get(playerid)+" won !!";
+				result = (result+value) / 3;
+				
+				if(result == 1){
+					resultMessage = "Game over "+players.get(playerid)+" won !!";
 				}
 				else{
 					currentStatus.clear();
 					
-					currentStatus.put(playerid, randNumber);
+					currentStatus.put(playerid, result);
 				}
-				
-				logs.add("Played by "+players.get(playerid));
 			}
 		}
 	}
@@ -93,7 +98,7 @@ public class GameController {
 		
 		
 		gStatus.setCurrentStatus(currentStatus);
-		gStatus.setResult(result);
+		gStatus.setResult(resultMessage);
 		gStatus.setLogs(logs);
 		
 		return gStatus;
@@ -105,8 +110,8 @@ public class GameController {
 		gStatus.setCurrentStatus(new HashMap<>());
 		logs.clear();
 		gStatus.setLogs(new ArrayList<>());
-		result = "none";
-		gStatus.setResult(result);
+		resultMessage = "none";
+		gStatus.setResult(resultMessage);
 		randNumber =0;
 	}
 }

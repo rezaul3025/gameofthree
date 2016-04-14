@@ -44,6 +44,13 @@
 					}).then(function successCallback(response) {
 					   	
 						$scope.hasJoin = true;
+						
+						if( $scope.pid == 'p1'){
+							$scope.p1Name = name;
+						}
+						else{
+							$scope.p2Name = name;
+						}
 					   	
 					  }, function errorCallback(response) {
 					    
@@ -106,7 +113,7 @@
 		<div ng-if="hasJoin">
 			<table cellpadding="5">
 				<tr ng-repeat="log in gameStatus.logs track by $index">
-					<td>{{log}}</td>
+					<td ng-attr-style="{{$index%2 ==0?'green':'lightgreen'}}"><b>{{log}}</b></td>
 				</tr>
 				<tr>	
 					<td><h2 ng-if="gameStatus.result != 'none'">{{gameStatus.result}}</h2></td>

@@ -7,14 +7,14 @@ import java.util.Map;
 
 public class GameStatus {
 	
-	Map<String, Integer> currentStatus = new HashMap<>(); 
+	Map<String, Float> currentStatus = new HashMap<>(); 
 	List<String> logs = new ArrayList<>();
 	String result = new String("none");
 	
-	public Map<String, Integer> getCurrentStatus() {
+	public Map<String, Float> getCurrentStatus() {
 		return currentStatus;
 	}
-	public void setCurrentStatus(Map<String, Integer> currentStatus) {
+	public void setCurrentStatus(Map<String, Float> currentStatus) {
 		this.currentStatus = currentStatus;
 	}
 	public List<String> getLogs() {
