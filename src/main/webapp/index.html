@@ -104,7 +104,7 @@
 		<h2> Welcome to game of three</h2>
 		<hr/>
 		
-		<div ng-if="playersNo == 1 &amp;&amp; !hasJoin"> Player 1 ready to play <br/>{{playersNo}}</div>
+		<div ng-if="playersNo == 1 &amp;&amp; !hasJoin"> Player 1 ready to play <br/></div>
 		<div ng-if="playersNo == 1 || playersNo == 0" > 
 			<label>Enter your name to join the game</label> <input type="text" ng-model="name"
 			placeholder="Enter a name here" />
@@ -113,25 +113,29 @@
 		<div ng-if="hasJoin">
 			<table cellpadding="5">
 				<tr ng-repeat="log in gameStatus.logs track by $index">
-					<td style="color:lightgreen"><b>{{log}}</b></td>
+					<td style="color:green"><b>{{log}}</b></td>
 				</tr>
 				<tr>	
-					<td><h2 ng-if="gameStatus.result != 'none'">{{gameStatus.result}}</h2></td>
+					<td><h2 ng-if="gameStatus.result != 'none'" style="color:red">{{gameStatus.result}}</h2></td>
+				</tr>
+				<tr>	
+					<td><h2 ng-if="gameStatus.currentStatus[pid] < 1" style="color:red">Game cannot be finished !!  please reset/restart the game again.</h2></td>
 				</tr>
 			</table>
 		</div>
 		<div ng-if="hasJoin">
 			<p ng-if="gameStatus.result == 'none'">Please, click on any button to start the game</p>
 			<p> [Note : Please, do not refresh the browser]</p>
+			<p ng-if="gameStatus.currentStatus[pid] &gt; 0" style="color:red"> Please, wait for the other player to play</p>
 			<table cellpadding="3">
 				<tr>
-					<td><button ng-disabled="gameStatus.currentStatus[pid] &gt; 0" ng-click="play(-1)">-1</button></td>
-					<td><button ng-disabled="gameStatus.currentStatus[pid] &gt; 0" ng-click="play(0)">0</button></td>
-					<td><button ng-disabled="gameStatus.currentStatus[pid] &gt; 0" ng-click="play(1)">+1</button></td>
+					<td><button ng-disabled="gameStatus.currentStatus[pid] &gt; 0 || (gameStatus.result != 'none' &amp;&amp gameStatus.currentStatus[pid] < 1)" ng-click="play(-1)">-1</button></td>
+					<td><button ng-disabled="gameStatus.currentStatus[pid] &gt; 0 || (gameStatus.result != 'none' &amp;&amp gameStatus.currentStatus[pid] < 1 )" ng-click="play(0)">0</button></td>
+					<td><button ng-disabled="gameStatus.currentStatus[pid] &gt; 0 || (gameStatus.result != 'none' &amp;&amp gameStatus.currentStatus[pid] < 1)" ng-click="play(1)">+1</button></td>
 				</tr>
 			</table>
 			<br/>
-			<button ng-click="reset()">Reset</button>
+			<button ng-click="reset()">Reset/Restart</button>
 		</div>
 		<div ng-if="playersNo == 2 &amp;&amp; pid.length=0"> Game in progress two player  </div>
 	</div>
